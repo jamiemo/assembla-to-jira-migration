@@ -95,7 +95,6 @@ FILES.each do |file|
         @num_unknowns += 1
         h = {}
         h['id'] = user_id
-        puts "JIRA_API_UNKNOWN_USER_CONSOLIDATE #{JIRA_API_UNKNOWN_USER_CONSOLIDATE}"
         if JIRA_API_UNKNOWN_USER_CONSOLIDATE
             h['login'] = "unknown"
             h['name'] = "Unknown"
