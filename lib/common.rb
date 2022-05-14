@@ -1056,7 +1056,7 @@ def rest_client_exception(e, method, url, payload = {})
   if e.response.include? "429 - Too many requests"
       puts "429 Too Many Requests: Backoff 5 minutes"
       puts "Response (#{e.response})"
-      sleep(5.minutes)
+      sleep(300)
   end
   message
 end
