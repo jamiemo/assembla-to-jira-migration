@@ -209,6 +209,8 @@ goodbye("Cannot find project with name='#{JIRA_API_PROJECT_NAME}'") unless proje
     jira_move_issues_to_sprint(next_sprint, @tickets_sprint_slice)
   end
   @jira_sprints << next_sprint.merge(issues: issues.join(',')).merge(assembla_id: sprint['id'])
+  # Avoid 429 Too Many Requests
+  sleep(5)
 end
 
 # First sprint should be 'active' and the other 'closed'
