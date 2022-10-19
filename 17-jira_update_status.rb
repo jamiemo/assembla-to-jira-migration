@@ -259,7 +259,7 @@ def jira_update_status(issue_id, assembla_status, counter)
   if result
     # If the issue has been closed (Done) we set the resolution to the appropriate value
     if assembla_status.casecmp('Done').zero? || assembla_status.casecmp('invalid').zero?
-      resolution_name = assembla_status.casecmp('invalid').zero? ? "Won't do" : 'Done'
+      resolution_name = assembla_status.casecmp('invalid').zero? ? "Won't Do" : 'Done'
       resolution_id = @jira_resolution_name_to_id[resolution_name].to_i
       unless resolution_id == '0'
         payload = {

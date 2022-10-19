@@ -52,6 +52,7 @@ JIRA_API_ADMIN_EMAIL = ENV['JIRA_API_ADMIN_EMAIL'].freeze
 JIRA_API_ADMINS_GROUP = (ENV['JIRA_API_ADMINS_GROUP'] || 'jira-administrators').freeze
 JIRA_API_DEFAULT_EMAIL = (ENV['JIRA_API_DEFAULT_EMAIL'] || 'example.org').gsub(/^@/, '').freeze
 JIRA_API_UNKNOWN_USER = (ENV['JIRA_API_UNKNOWN_USER'] || 'unknown.user').freeze
+JIRA_API_UNKNOWN_USER_CONSOLIDATE = ENV['JIRA_API_UNKNOWN_USER_CONSOLIDATE'] == 'true'
 JIRA_API_LEAD_ACCOUNT_ID = ENV['JIRA_API_LEAD_ACCOUNT_ID'].freeze
 
 JIRA_API_IMAGES_THUMBNAIL = (ENV['JIRA_API_IMAGES_THUMBNAIL'] || 'description:false,comments:true').freeze
@@ -1054,6 +1055,11 @@ def rest_client_exception(e, method, url, payload = {})
     message = e.to_s
   end
   puts "#{method} #{url}#{payload.empty? ? '' : ' ' + payload.inspect} => NOK (#{message})"
+  if e.response.include? "429 - Too many requests"
+      puts "429 Too Many Requests: Backoff 5 minutes"
+      puts "Response (#{e.response})"
+      sleep(300)
+  end
   message
 end
 
