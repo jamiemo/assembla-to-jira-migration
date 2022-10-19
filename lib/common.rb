@@ -999,7 +999,7 @@ def markdown_image(image, images, content_type)
   else
     # Assembla API may return [[image:<filename>]] instead of [[image:<id>]] inline in a ticket
     result = "!#{id}#{@content_types_thumbnail[content_type] ? '|thumbnail' : ''}!"
-    warning "Reformat markdown image='#{image}', id='#{id}', text='#{text}, result='#{result}' => NOT FOUND"
+    warning "Reformat markdown image='#{image}', id='#{id}', text='#{text}', result='#{result}' => NOT FOUND"
   end
   result
 end
