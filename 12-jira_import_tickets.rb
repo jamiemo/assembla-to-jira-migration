@@ -171,7 +171,7 @@ def create_ticket_jira(ticket, counter, total)
   project_id = @project['id']
   ticket_id = ticket['id']
   ticket_number = ticket['number']
-  summary = reformat_markdown(ticket['summary'].gsub('/\n/',' '), user_ids: @assembla_login_to_jira_id, images: @list_of_images, content_type: 'summary', tickets: @assembla_number_to_jira_key)
+  summary = reformat_markdown(ticket['summary'], user_ids: @assembla_login_to_jira_id, images: @list_of_images, content_type: 'summary', tickets: @assembla_number_to_jira_key).gsub('/\n/',' ')
   created_on = ticket['created_on']
   completed_date = ticket['completed_date']
   due_date = ticket['due_date']
