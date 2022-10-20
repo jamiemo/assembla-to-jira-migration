@@ -107,8 +107,8 @@ puts "SKIP to ticket #{@startAt}" if @startAt > 1
     extname = File.extname(filepath)
     basename = File.basename(filepath, extname)
     dirname = File.dirname(filepath)
-    basename = basename.sub(/\.\d{4}$/, '')
-    filename = "#{basename}.#{nr.to_s.rjust(4, '0')}#{extname}"
+    basename = basename.sub(/\.\d{6}$/, '')
+    filename = "#{basename}.#{nr.to_s.rjust(6, '0')}#{extname}"
     filepath = "#{dirname}/#{filename}"
   end
 
