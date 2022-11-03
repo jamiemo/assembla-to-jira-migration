@@ -189,24 +189,25 @@ end
 
 def jira_close_sprint(sprint, milestone)
   result = nil
-  name = get_name(sprint['name'])
-  state = milestone['is_completed'].to_s.downcase == "true" ? 'closed' : 'active'
-  url = "#{URL_JIRA_SPRINTS}/#{sprint['id']}"
-  payload = {
-    state: state
-  }
-  # if sprint is complete update completeDate if it exists
-  if milestone['is_completed'].to_s.downcase == "true" && milestone['completed_date'].length > 0
-    payload[:completeDate] = milestone['completed_date']
-  end
-  begin
-    RestClient::Request.execute(method: :post, url: url, payload: payload.to_json, headers: JIRA_HEADERS_ADMIN)
-    puts "POST #{url} name='#{name}', payload='#{payload}' => OK"
-    result = true
-  rescue RestClient::ExceptionWithResponse => e
-    rest_client_exception(e, 'POST', url, payload)
-  rescue => e
-    puts "POST #{url} name='#{name}', payload='#{payload}' => NOK (#{e.message})"
+  if milestone['is_completed'].to_s.downcase == "true"
+    name = sprint['name']
+    url = "#{URL_JIRA_SPRINTS}/#{sprint['id']}"
+    payload = {
+      state: 'closed'
+    }.to_json
+    # https://developer.atlassian.com/cloud/jira/software/rest/api-group-sprint/#api-rest-agile-1-0-sprint-sprintid-post
+    # A sprint can be completed by updating the state to 'closed'. This action requires the sprint to be in the 'active' state. 
+    # This sets the completeDate to the time of the request.
+    # The completeDate field cannot be updated manually.
+    begin
+      RestClient::Request.execute(method: :post, url: url, payload: payload, headers: JIRA_HEADERS_ADMIN)
+      puts "POST #{url} name='#{name}', payload='#{payload}' => OK"
+      result = true
+    rescue RestClient::ExceptionWithResponse => e
+      rest_client_exception(e, 'POST', url, payload)
+    rescue => e
+      puts "POST #{url} name='#{name}', payload='#{payload}' => NOK (#{e.message})"
+    end
   end
   result
 end
