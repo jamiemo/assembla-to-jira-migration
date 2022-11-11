@@ -107,9 +107,9 @@ JIRA_API_PRIORITIES.split(',').each do |priority|
     m = /^(.*):(.*)$/.match(priority)
     from = m[1]
     to = m[2]
-    @jira_translate_priorities[from] = to.to_i
+    @jira_translate_priorities[from] = to
   else
-    @jira_translate_priorities[priority] = priority.to_i
+    @jira_translate_priorities[priority] = priority
   end
 end
 
