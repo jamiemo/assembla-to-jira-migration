@@ -129,6 +129,8 @@ puts "SKIP to ticket #{@startAt}" if @startAt > 1
     write_csv_file_append(attachments_jira_csv, [attachment], counter == 1)
   rescue RestClient::ExceptionWithResponse => e
     rest_client_exception(e, 'GET', url)
+    puts "Retrying #{url}: #{e}"
+    retry
   rescue Errno::ECONNRESET, OpenSSL::OpenSSLError => e
     puts "Retrying #{url}: #{e}"
     retry
