@@ -114,6 +114,7 @@ puts "SKIP to ticket #{@startAt}" if @startAt > 1
 
   puts "Downloading: #{url} => #{filename}"
   puts "#{percentage}% [#{counter}|#{@attachments_total}] #{created_at} #{assembla_ticket_id} '#{filename}' (#{content_type})"
+  retries = 0
   begin
     content = RestClient::Request.execute(method: :get, url: url, headers: ASSEMBLA_HEADERS)
     IO.binwrite(filepath, content)
@@ -129,11 +130,17 @@ puts "SKIP to ticket #{@startAt}" if @startAt > 1
     write_csv_file_append(attachments_jira_csv, [attachment], counter == 1)
   rescue RestClient::ExceptionWithResponse => e
     rest_client_exception(e, 'GET', url)
-    puts "Retrying #{url}: #{e}"
-    retry
+    if (retries += 1) < 5
+      puts "Retrying ##{retries} #{url}: #{e}"
+      sleep (15)
+      retry
+    end
   rescue Errno::ECONNRESET, OpenSSL::OpenSSLError => e
-    puts "Retrying #{url}: #{e}"
-    retry
+    if (retries += 1) < 5
+      puts "Retrying ##{retries} #{url}: #{e}"
+      sleep (15)
+      retry
+    end
   end
 end
 
