@@ -1053,10 +1053,12 @@ def rest_client_exception(e, method, url, payload = {})
     message = e.to_s
   end
   puts "#{method} #{url}#{payload.empty? ? '' : ' ' + payload.inspect} => NOK (#{message})"
-  if e.response.include? "429 - Too many requests"
-      puts "429 Too Many Requests: Backoff 5 minutes"
-      puts "Response (#{e.response})"
-      sleep(300)
+  unless e.response.nil?
+    if e.response.include? "429 - Too many requests"
+        puts "429 Too Many Requests: Backoff 5 minutes"
+        puts "Response (#{e.response})"
+        sleep(300)
+    end
   end
   message
 end
