@@ -16,14 +16,14 @@ JIRA_API_STATUSES.split(',').each do |status|
 end
 
 @jira_status_to_resolution = {}
-JIRA_API_RESOLUTIONS.split(',').each do |status|
-  if status.index(':')
-    m = /^(.*):(.*)$/.match(status)
-    from = m[1]
-    to = m[2]
-    @jira_status_to_resolution[from] = to
-  else
-    @jira_status_to_resolution[status] = status
+unless JIRA_API_RESOLUTIONS.nil?
+  JIRA_API_RESOLUTIONS.split(',').each do |status|
+    if status.index(':')
+      m = /^(.*):(.*)$/.match(status)
+      from = m[1]
+      to = m[2]
+      @jira_status_to_resolution[from] = to
+    end
   end
 end
 
