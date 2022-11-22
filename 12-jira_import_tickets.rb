@@ -102,7 +102,7 @@ puts "Inactive Jira users: #{@inactive_jira_users.length}"
 end
 
 @jira_translate_priorities = {}
-unless JIRA_API_PRIORITIES.nil?
+if JIRA_API_PRIORITIES
   .split(',').each do |priority|
     if priority.index(':')
       m = /^(.*):(.*)$/.match(priority)
