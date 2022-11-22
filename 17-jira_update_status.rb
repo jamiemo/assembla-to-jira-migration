@@ -16,7 +16,7 @@ JIRA_API_STATUSES.split(',').each do |status|
 end
 
 @jira_status_to_resolution = {}
-unless JIRA_API_RESOLUTIONS.nil?
+if JIRA_API_RESOLUTIONS
   JIRA_API_RESOLUTIONS.split(',').each do |status|
     if status.index(':')
       m = /^(.*):(.*)$/.match(status)
