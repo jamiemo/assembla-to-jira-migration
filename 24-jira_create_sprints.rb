@@ -235,6 +235,8 @@ goodbye("Cannot find project with name='#{JIRA_API_PROJECT_NAME}'") unless proje
   end
   jira_close_sprint(next_sprint, sprint)
   @jira_sprints << next_sprint.merge(issues: issues.join(',')).merge(assembla_id: sprint['id'])
+  # Avoid 429 Too Many Requests
+  sleep(5)
 end
 
 puts "\nTotal updates: #{@jira_sprints.length}"
