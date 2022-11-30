@@ -103,7 +103,7 @@ end
 
 @jira_translate_priorities = {}
 if defined?(JIRA_API_PRIORITIES)
-  .split(',').each do |priority|
+  JIRA_API_PRIORITIES.split(',').each do |priority|
     if priority.index(':')
       m = /^(.*):(.*)$/.match(priority)
       from = m[1]
